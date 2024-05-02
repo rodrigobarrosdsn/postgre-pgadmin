@@ -1,0 +1,30 @@
+version: "3"
+
+networks:
+  database:
+    driver: bridge
+
+services:
+  postgresql:
+    image: "bitnami/postgresql:11.20.0"
+    networks:
+      - database
+    volumes:
+      - ./volumes:/bitnami/postgresql
+    environment:
+      POSTGRES_PASSWORD: "abc123"
+      POSTGRESQL_USERNAME: "root"
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: "dpage/pgadmin4:7.4"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "abc123"
+    ports:
+      - "54321:80"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin4/storage
+    networks:
+      - database
